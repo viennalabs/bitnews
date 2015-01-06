@@ -1,4 +1,5 @@
 # Django settings for bitnews project.
+from django.core.urlresolvers import reverse_lazy
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -126,7 +127,13 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     # my own apps
     'links',
+    'bitnews',
 )
+
+# USER MANAGEMENT
+LOGIN_URL = reverse_lazy('login') # see the reverse_lazy import on top
+LOGIN_REDIRECT_URL = reverse_lazy('home')
+LOGOUT_URL = reverse_lazy('logout')
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
