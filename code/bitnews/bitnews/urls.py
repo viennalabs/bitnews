@@ -1,12 +1,13 @@
 from django.conf.urls import patterns, include, url
 
-# Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
 
 # Views
-from links.views import LinkListView
+from links.views import LinkListView, UserProfileDetailView, UserProfileEditView
 
+# Decorator to make profile edit page accessable only when logged in
+from django.contrib.auth.decorators import login_required as auth
 
 # URLs
 urlpatterns = patterns('',
@@ -24,9 +25,19 @@ urlpatterns = patterns('',
     	name="logout"
     ),
 
-    # Uncomment the admin/doc line below to enable admin documentation:
+    url(r'^accounts/', include('registration.backends.simple.urls'), # don't define the ending ($) to allow for 'sub-urls'
+    ),
+
+    url(r'^users/(?P<slug>\w+)/$', UserProfileDetailView.as_view(),
+    	name="profile"
+    ),
+
+    # wrap this url in auth to make sure only logged in user can edit his profile
+    url(r'^edit_profile/$', auth(UserProfileEditView.as_view()),
+    	name="edit_profile"
+    ),
+
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 
 

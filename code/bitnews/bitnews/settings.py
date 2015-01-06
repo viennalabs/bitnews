@@ -126,14 +126,21 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     # my own apps
+    'registration', # 3rd party django-registration app
     'links',
     'bitnews',
 )
 
 # USER MANAGEMENT
-LOGIN_URL = reverse_lazy('login') # see the reverse_lazy import on top
-LOGIN_REDIRECT_URL = reverse_lazy('home')
+# see the reverse_lazy import on top
+# we use reverse_lazy bc settings.py is usually loaded first,
+# and we need to wait for urls to be ready before the reverse lookup works.
+LOGIN_URL = reverse_lazy('login')
+LOGIN_REDIRECT_URL = reverse_lazy('home') # were you go after login
 LOGOUT_URL = reverse_lazy('logout')
+
+ACCOUNT_ACTIVATION_DAYS = 7 # Activation window after email is sent
+REGISTRATION_AUTO_LOGIN = True # Automatically log the user in from activation link
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

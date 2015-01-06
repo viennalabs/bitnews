@@ -1,28 +1,54 @@
 <html>
 <head>
   <title>Bitnews</title>
-  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/main.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/pure.css" />
+
 </head>
 <body>
-<h1>Bitnews</h1>
 
-<p>
-  A place to find, share and vote on the very best writings on Bitcoin, Blockchain technology, and applications of crypto-ownership.
-</p>
+<div class="pure-menu pure-menu-open pure-menu-horizontal">
+  <a href="#" class="pure-menu-heading">Bitnews</a>
 
-{% block content %}
-{% endblock %}
-
-<footer>
-  <p>
-      <a href="{% url 'home' %}"> Home </a> |
+  <ul>
+    <li class="pure-menu-selected">
+      <a href="{% url 'home' %}"> Home </a>
+    </li>
     {% if user.is_authenticated %}
-      <a href="{% url 'logout' %}"> Logout </a> |
+    <li>
+      <a href="{% url 'logout' %}"> Logout </a>
+    </li>
+    <li>
+      <a href="{% url 'profile' slug=user.username %}">
+        {{ user.username }}
+      </a>
+    </li>
     {% else %}
-      <a href="{% url 'login' %}"> Login </a> 
+    <li>
+      <a href="{% url 'login' %}"> Login </a>
+    </li>
+    <li>
+      <a href="{% url 'registration_register' %}"> Register </a>
+    </li>
     {% endif %}
-  </p>
-</footer>
+  </ul>
+</div>
+
+<div class="pure-g">
+  <div class="pure-u-1-6">
+  <!-- Left margin -->
+  </div>
+  <div class="pure-u-2-3">
+
+    {% block content %}
+    {% endblock %}
+
+  </div>
+  <div class="pure-u-1-6">
+    <!-- Right Margin -->
+  </div>
+</div>
 
 </body>
 </html>

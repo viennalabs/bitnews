@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<p>
+  A place to find, share and vote on the very best writings on Bitcoin, Blockchain technology, and applications of crypto-ownership.
+</p>
+
 <ol>
 {% for link in object_list %}
     <li> [{{ link.votes }}]
