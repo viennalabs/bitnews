@@ -129,6 +129,8 @@ INSTALLED_APPS = (
     'registration', # 3rd party django-registration app
     'links',
     'bitnews',
+    # native apps
+    'django.contrib.comments'
 )
 
 # USER MANAGEMENT

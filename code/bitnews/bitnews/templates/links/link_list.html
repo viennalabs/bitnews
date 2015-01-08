@@ -1,16 +1,88 @@
 {% extends "base.html" %}
+{% load comments %}
 
 {% block content %}
 
 <p>
-  A place to find, share and vote on the very best writings on Bitcoin, Blockchain technology, and applications of crypto-ownership.
+  Bitnews is a place to find, share and vote on the very best on decentralization and crypto-ownership.
 </p>
 
+<h2> Submissions </h2>
+
+<!-- Legacy stuff to show pagination -->
+{% if is_paginated %}
+<ol start="{{ page_obj.start_index }}">
+{% else %}
 <ol>
-{% for link in object_list %}
-    <li> [{{ link.votes }}]
-    <a href="{{ link.url }}" target="_blank"> {{ link.title }}</a>
-    </li>
-{% endfor %}
+{% endif %}
 </ol>
+
+<!-- new, table based layout. needs functioning ranking -->
+<table class="pure-table pure-table-bordered">
+	<thead>
+		<tr>
+			<th>Rank</th>
+			<th>Vote</th>
+			<th>Votes</th>
+			<th>Title</th>
+			<th>Submitter</th>
+			<th>Submitted</th>
+			<th>Comments</th>
+			<!-- If is Admin -->
+			<th>Moderation</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for link in object_list %}
+		<tr class="">
+			<td>#</td>
+			<td>up / down</td>
+			<td>{{ link.votes }}</td>
+			<td>
+				<a href="{{ link.url }}" target="_blank">{{ link.title }}</a>
+			</td>
+			<td>{{ link.submitter }}</td>
+			<td>{{ link.submitted }}</td>
+			<td>
+				<a href="{% url 'link_detail' pk=link.pk %}">
+				{% get_comment_count for link as comment_count %}
+				{{ comment_count }} comment {{ comment_count | pluralize }}
+				
+				</a>
+			</td>
+
+			{% if object.submitter == admin %}
+			<td>
+			<a href="{% url 'link_update' pk=link.pk %}">edit </a>
+			<span>/</span>
+			<a href="{% url 'link_delete' pk=link.pk %}"> delete</a>
+			</td>
+			{% endif %}
+
+		</tr>
+{% endfor %}
+	</tbody>
+</table>
+
+
+
+
+{% if is_paginated %}
+	{% if page_obj.has_next %}
+<br />
+<center>
+<ul class="pure-paginator">
+	<li><a class="pure-button prev" href="?page={{ page_obj.next_page_number }}">&#171;</a></li>
+	<li><a class="pure-button pure-button-active" href="#">1</a></li>
+	<li><a class="pure-button" href="#">2</a></li>
+	<li><a class="pure-button" href="#">3</a></li>
+	<li><a class="pure-button" href="#">4</a></li>
+	<li><a class="pure-button" href="#">5</a></li>
+	<li><a class="pure-button next" href="#">&#187;</a></li>
+</ul>
+</center>
+<br />
+	{% endif %}
+{% endif %}
+
 {% endblock %}

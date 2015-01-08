@@ -1,9 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.db.models import Count
-
 from django.db.models.signals import post_save
+from django.core.urlresolvers import reverse
 
+from django.contrib.auth.models import User
 
 class VoteCounter(models.Manager):
 	# we'll overwrite the get_query_set function
@@ -24,6 +24,10 @@ class Link(models.Model):
 
 	def __unicode__(self):
 		return self.title
+
+	# where do we redirect to after submission?
+	def get_absolute_url(self):
+		return reverse("link_detail", kwargs={"pk": str(self.id)})
 
 class Vote(models.Model):
 	voter = models.ForeignKey(User)
